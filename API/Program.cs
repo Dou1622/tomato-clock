@@ -1,10 +1,31 @@
+using System.Data;
+using System.Data.Common;
+using API.Repositories;
+using MySqlConnector;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddScoped<IDbConnection>((services) =>
+{
+    return new MySqlConnection(builder.Configuration["ConnectionString"]);
+});
+builder.Services.AddScoped<TimerRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .WithOrigins("http://localhost:4200");
+    });
+});
 
 var app = builder.Build();
 
@@ -16,15 +37,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy", policy =>
-    {
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .WithOrigins("http://localhost:4200");
-    });
-});
 app.UseCors("CorsPolicy");
 
 app.UseAuthorization();

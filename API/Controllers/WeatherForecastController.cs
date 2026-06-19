@@ -1,25 +1,22 @@
+using API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Timer = API.Repositories.Timer;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class TimerController : ControllerBase
 {
-    private static readonly string[] Summaries =
-    [
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    ];
-
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    private readonly TimerRepository repository;
+    public TimerController(TimerRepository repository)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        this.repository = repository;
+    }
+
+    [HttpGet]
+    public async Task<IEnumerable<Timer>> Get()
+    {
+        return await repository.GetAll();
     }
 }
