@@ -21,13 +21,13 @@ namespace API.Repositories
             _dbConnection = conn;
         }
 
-        public Task<IEnumerable<Timer>> GetAll()
+        public async Task<IEnumerable<Timer>> GetAll()
         {
             var sql = @$"
             select *
-            from Timer
+            from TimerApp.Timer;
             ";
-            return _dbConnection.QueryAsync<Timer>(sql);
+            return await _dbConnection.QueryAsync<Timer>(sql);
         }
 
     }

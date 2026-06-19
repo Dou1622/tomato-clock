@@ -1,21 +1,40 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Timer } from '../models/timer';
 
 @Component({
   selector: 'app-tomato-timer',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './tomato-timer.html',
   styleUrl: './tomato-timer.css',
   standalone: true
 })
 export class TomatoTimer {
+  timers = signal<Array<Timer>>([]);
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
 
   constructor(private http: HttpClient) { }
 
-  // This is useless, but normally when you start a new project, you get
-  // one simple feature that works completey, from the UI, to the Web API,
-  // to the business logic (but usually no database stuff).
+  ngOnInit(): void {
+    this.fetchTimers();
+  }
 
-  
+  fetchTimers() {
+    this.loading.set(true);
+    this.error.set(null);
+    this.http.get<Timer[]>('/Timer').subscribe({
+      next: (data) => {
+        debugger;
+        this.timers.set(data);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error = err?.message ?? 'Failed to load timers';
+        this.loading.set(false);
+      }
+    });
+  }
 
 }
