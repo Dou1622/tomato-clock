@@ -1,0 +1,70 @@
+/* Tomato Timer table styles */
+.tt-container {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	color: #222;
+}
+
+.tt-container h3 {
+	margin: 0 0 12px 0;
+	font-weight: 600;
+}
+
+.tt-table-wrap {
+	overflow-x: auto;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(18, 38, 63, 0.06);
+}
+
+.tt-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	min-width: 520px;
+	background: white;
+}
+
+.tt-table thead th {
+	text-align: left;
+	padding: 12px 16px;
+	font-size: 13px;
+	letter-spacing: 0.2px;
+	color: #0f1720;
+	background: linear-gradient(180deg, #f6f9fb 0%, #eef3f8 100%);
+	border-bottom: 1px solid rgba(16,24,40,0.06);
+}
+
+.tt-table tbody td {
+	padding: 12px 16px;
+	font-size: 14px;
+	color: #334155;
+	border-bottom: 1px solid rgba(16,24,40,0.04);
+}
+
+.tt-table tbody tr:nth-child(odd) {
+	background: #ffffff;
+}
+
+.tt-table tbody tr:nth-child(even) {
+	background: #fbfdff;
+}
+
+.tt-table tbody tr:hover {
+	background: linear-gradient(90deg, rgba(59,130,246,0.03), rgba(59,130,246,0.01));
+}
+
+.tt-table td:first-child,
+.tt-table th:first-child {
+	padding-left: 20px;
+}
+
+.tt-table td:last-child,
+.tt-table th:last-child {
+	padding-right: 20px;
+}
+
+@media (max-width: 640px) {
+	.tt-container h3 { font-size: 16px; }
+	.tt-table thead th, .tt-table tbody td { padding: 10px 12px; font-size: 13px; }
+}
+
+.error { color: #b91c1c; }

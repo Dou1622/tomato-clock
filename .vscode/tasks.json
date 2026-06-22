@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run-api",
+      "type": "shell",
+      "command": "dotnet watch",
+      "options": {
+        "cwd": "${workspaceFolder}/API" 
+      },
+      "isBackground": true,
+      // 🛠️ 关键修改：让 VS Code 知道 dotnet 什么时候算真正启动成功
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "watch : Started",
+          "endsPattern": "Now listening on" // .NET 启动完成的标志性日志
+        }
+      }
+    },
+    {
+      "label": "run-client",
+      "type": "shell",
+      "command": "ng serve",
+      "options": {
+        "cwd": "${workspaceFolder}/client" 
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Initial Chunk Files",
+          "endsPattern": "Watch mode enabled." // Angular 编译成功的标志
+        }
+      }
+    },
+    {
+      "label": "run-all",
+      // 🛠️ 关键修改：强制按数组里的顺序“串行”执行
+      "dependsOrder": "sequence", 
+      "dependsOn": [
+        "run-api",
+        "run-client"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

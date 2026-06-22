@@ -1,10 +1,17 @@
-<div>
+<div class="tt-container">
 	<h3>Timers</h3>
 
-	<div *ngIf="loading()">Loading timers...</div>
-	<div *ngIf="error()" class="error">{{ error() }}</div>
+	@if(error()) {
+		<div>{{ error() }}</div>
+	}
 
-	<table *ngIf="!loading() && !error() && timers().length">
+	@if(loading()) {
+		<div>Loading timers...</div>
+	}
+
+
+	<div class="tt-table-wrap">
+		<table class="tt-table">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -14,14 +21,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let t of timers()">
+			@for (t of timers(); track t.id) {
+			<tr>
 				<td>{{ t.id }}</td>
 				<td>{{ t.name }}</td>
 				<td>{{ t.startTimeUtc }}</td>
 				<td>{{ t.endTimeUtc ?? '-' }}</td>
 			</tr>
+			}
 		</tbody>
-	</table>
+		</table>
+	</div>
 
-	<div *ngIf="!loading && !error && !timers.length">No timers found.</div>
+
+	@if (!loading() && !error() && !timers().length) {
+		<div>No timers found.</div>
+	}
 </div>

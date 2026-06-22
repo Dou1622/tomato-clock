@@ -7,10 +7,10 @@ import { Timer } from '../models/timer';
   selector: 'app-tomato-timer',
   imports: [CommonModule],
   templateUrl: './tomato-timer.html',
-  styleUrl: './tomato-timer.css',
+  styleUrls: ['./tomato-timer.css'],
   standalone: true
 })
-export class TomatoTimer {
+export class TomatoTimer implements OnInit {
   timers = signal<Array<Timer>>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
@@ -26,12 +26,11 @@ export class TomatoTimer {
     this.error.set(null);
     this.http.get<Timer[]>('/Timer').subscribe({
       next: (data) => {
-        debugger;
         this.timers.set(data);
         this.loading.set(false);
       },
       error: (err) => {
-        this.error = err?.message ?? 'Failed to load timers';
+        this.error.set(err?.message ?? 'Failed to load timers');
         this.loading.set(false);
       }
     });

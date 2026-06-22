@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch API (.NET)",
+      "type": "coreclr",
+      "request": "launch",
+      //"preLaunchTask": "build",
+      "program": "${project}/API/bin/Debug/net10.0/API.dll",
+      "cwd": "${project}/API",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "serverReadyAction": {
+        "pattern": "Now listening on: (https?://\\S+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Serve Angular (npm start)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${project}/client",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Launch Browser (Angular)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${project}/client/src"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch API + Angular",
+      "configurations": [
+        "Launch API (.NET)",
+        "Launch Browser (Angular)"
+        //"Serve Angular (npm start)"
+      ]
+    }
+  ]
+}
