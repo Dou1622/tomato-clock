@@ -12,7 +12,7 @@
       // 🛠️ 关键修改：告诉 VS Code，一旦发现 4200 端口有动静，立刻弹出浏览器，不要傻傻地等 Task 结束
       "serverReadyAction": {
         "action": "openExternally",
-        "pattern": "Compiled successfully",
+        "pattern": "Watch mode enabled.",
         "uriFormat": "http://localhost:4200"
       }
     }
