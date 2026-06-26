@@ -1,0 +1,16 @@
+<div class="timer-container">
+  <h2>Pomodoro Timer</h2>
+  
+  <div class="time-display">
+    {{ formatTime }}
+  </div>
+
+  <div class="controls">
+    @if (!isRunning) {
+        <button (click)="startTimer()">Start</button>
+    } @else {
+        <button (click)="pauseTimer()">Pause</button>
+    }
+    <button (click)="resetTimer()">Reset</button>
+  </div>
+</div>
