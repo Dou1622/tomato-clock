@@ -12,8 +12,8 @@ import { interval, Subscription } from 'rxjs';
 
 export class PomodoroTimer implements OnInit, OnDestroy {
   //Default Pomodoto Time : 25 mins in seconds
-  readonly WORK_TIME = 0.05 * 60;
-  readonly BREAK_TIME = 0.03 * 60;
+  readonly WORK_TIME = 0.10 * 60;
+  readonly BREAK_TIME = 0.05 * 60;
 
   timeLeft: number = this.WORK_TIME;
   //timerInterval: any = null;
@@ -44,9 +44,8 @@ export class PomodoroTimer implements OnInit, OnDestroy {
         // Explicitly tell Angular to check for changes and update the view
         this.cdr.detectChanges();
       } else {
-        this.playNotificationSound();
         this.handleTimerExpiry();
-        // this.pauseTimer();
+        // this.pauseTimer);
         // alert('Timer is up! Take a break.');
       }
     });
@@ -56,11 +55,18 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     this.pauseTimer(); // Pause the timer first
 
     if(!this.isBreak) {
+      this.playNotificationSound();
       alert('Timer is up! Take a break!');
+
+      this.stopNotificationSound();
       this.isBreak = true;
       this.timeLeft = this.BREAK_TIME;
+
+      this.startTimer();
     } else {
+      this.playNotificationSound();
       alert('Break is over!');
+      this.stopNotificationSound();
       this.isBreak = false;
       this.timeLeft = this.WORK_TIME;
     }
@@ -75,6 +81,11 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     this.audio.play().catch(err => {
       console.log('Cannot play the notification sound.')
     })
+  }
+
+  private stopNotificationSound(): void {
+    this.audio.pause();
+    this.audio.currentTime = 0;
   }
 
   // Pause the active timer
