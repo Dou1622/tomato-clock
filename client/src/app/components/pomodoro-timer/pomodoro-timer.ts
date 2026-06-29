@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { CommonModule } from '@angular/common';
+//import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
@@ -12,13 +12,18 @@ import { interval, Subscription } from 'rxjs';
 
 export class PomodoroTimer implements OnInit, OnDestroy {
   //Default Pomodoto Time : 25 mins in seconds
-  readonly DEFAULT_TIME = 0.1 * 60;
-  timeLeft: number = this.DEFAULT_TIME;
+  readonly WORK_TIME = 0.2 * 60;
+  readonly BREAK_TIME = 0.5 * 60;
+
+  timeLeft: number = this.WORK_TIME;
   //timerInterval: any = null;
   isRunning: boolean = false;
+  isBreak: boolean = false;
 
   // Use RxJS Subscription instead of any for the interval.
   private timerSubscription: Subscription | null = null;
+
+  private audio = new Audio('https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg');
 
   // Inject ChangeDetectorRef to force UI updates if needed.
   constructor(private cdr: ChangeDetectorRef){}
@@ -39,11 +44,22 @@ export class PomodoroTimer implements OnInit, OnDestroy {
         // Explicitly tell Angular to check for changes and update the view
         this.cdr.detectChanges();
       } else {
-        this.pauseTimer();
-        alert('Timer is up! Take a break.');
+        //this.playNotificationSound();
+        this.handleTimerExpiry();
+        // this.pauseTimer();
+        // alert('Timer is up! Take a break.');
         // TODO: Call C# API to save this completed session.
       }
     });
+  }
+
+  private handleTimerExpiry(): void {
+    this.pauseTimer(); // Pause the timer first
+
+    if(!this.isBreak) {
+      alert('Timer is up! Take a break!');
+      // TODO: Call C# API to save this completed session.
+    }
   }
 
   // Pause the active timer
@@ -59,7 +75,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
   // Reset the timer to default 25 mins.
   resetTimer(): void {
     this.pauseTimer();
-    this.timeLeft = this.DEFAULT_TIME;
+    this.timeLeft = this.WORK_TIME;
     this.cdr.detectChanges();
   }
 
