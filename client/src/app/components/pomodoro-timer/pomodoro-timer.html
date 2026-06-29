@@ -1,5 +1,12 @@
 <div class="timer-container">
   <h2>Pomodoro Timer</h2>
+  <h3 class="status-title">
+    @if (isBreak) {
+      <span style="color: #2ecc71;">☕ Break</span>
+    } @else {
+      <span style="color: #e74c3c;">🔥 Focus</span>
+    }
+  </h3>
   
   <div class="time-display">
     {{ formatTime }}
@@ -12,5 +19,6 @@
         <button (click)="pauseTimer()">Pause</button>
     }
     <button (click)="resetTimer()">Reset</button>
+    <button (click)="resetAllTimer()">Reset All</button>
   </div>
 </div>

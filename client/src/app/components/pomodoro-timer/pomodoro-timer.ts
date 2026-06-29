@@ -12,8 +12,8 @@ import { interval, Subscription } from 'rxjs';
 
 export class PomodoroTimer implements OnInit, OnDestroy {
   //Default Pomodoto Time : 25 mins in seconds
-  readonly WORK_TIME = 0.2 * 60;
-  readonly BREAK_TIME = 0.5 * 60;
+  readonly WORK_TIME = 0.05 * 60;
+  readonly BREAK_TIME = 0.03 * 60;
 
   timeLeft: number = this.WORK_TIME;
   //timerInterval: any = null;
@@ -44,11 +44,10 @@ export class PomodoroTimer implements OnInit, OnDestroy {
         // Explicitly tell Angular to check for changes and update the view
         this.cdr.detectChanges();
       } else {
-        //this.playNotificationSound();
+        this.playNotificationSound();
         this.handleTimerExpiry();
         // this.pauseTimer();
         // alert('Timer is up! Take a break.');
-        // TODO: Call C# API to save this completed session.
       }
     });
   }
@@ -58,8 +57,24 @@ export class PomodoroTimer implements OnInit, OnDestroy {
 
     if(!this.isBreak) {
       alert('Timer is up! Take a break!');
-      // TODO: Call C# API to save this completed session.
+      this.isBreak = true;
+      this.timeLeft = this.BREAK_TIME;
+    } else {
+      alert('Break is over!');
+      this.isBreak = false;
+      this.timeLeft = this.WORK_TIME;
     }
+
+    this.cdr.detectChanges();
+
+    // this.startTimer(); // Auto-restart.
+  }
+
+  private playNotificationSound(): void {
+    this.audio.currentTime = 0;
+    this.audio.play().catch(err => {
+      console.log('Cannot play the notification sound.')
+    })
   }
 
   // Pause the active timer
@@ -74,6 +89,12 @@ export class PomodoroTimer implements OnInit, OnDestroy {
 
   // Reset the timer to default 25 mins.
   resetTimer(): void {
+    this.pauseTimer();
+    this.timeLeft = this.isBreak ? this.BREAK_TIME : this.WORK_TIME;
+    this.cdr.detectChanges();
+  }
+
+  resetAllTimer(): void {
     this.pauseTimer();
     this.timeLeft = this.WORK_TIME;
     this.cdr.detectChanges();
