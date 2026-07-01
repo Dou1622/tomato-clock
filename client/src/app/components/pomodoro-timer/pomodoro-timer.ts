@@ -48,6 +48,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
         // this.pauseTimer);
         // alert('Timer is up! Take a break.');
       }
+      
     });
   }
 
