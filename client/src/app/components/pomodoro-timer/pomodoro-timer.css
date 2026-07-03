@@ -1,3 +1,5 @@
-circle {
-    stroke-dasharray: 100% 0%;
+.progress-ring__circle{
+    stroke-dasharray: 453.372 453.372; /* 2*pi*r */
+    stroke-dashoffset: 453.372*;
+
 }

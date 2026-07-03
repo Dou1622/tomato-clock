@@ -20,6 +20,8 @@ export class PomodoroTimer implements OnInit, OnDestroy {
   isRunning: boolean = false;
   isBreak: boolean = false;
 
+  const circle = document.querySelector('circle');
+
   // Use RxJS Subscription instead of any for the interval.
   private timerSubscription: Subscription | null = null;
 
