@@ -12,15 +12,17 @@ import { interval, Subscription } from 'rxjs';
 
 export class PomodoroTimer implements OnInit, OnDestroy {
   //Default Pomodoto Time : 25 mins in seconds
-  readonly WORK_TIME = 0.10 * 60;
+  readonly WORK_TIME = 0.05 * 60;
   readonly BREAK_TIME = 0.05 * 60;
+  readonly circumference = 2 * Math.PI * 72; 
+  strokeDashoffset: number = 0;
+  
 
   timeLeft: number = this.WORK_TIME;
+  circleTime: number = this.WORK_TIME;
   //timerInterval: any = null;
   isRunning: boolean = false;
   isBreak: boolean = false;
-
-  const circle = document.querySelector('circle');
 
   // Use RxJS Subscription instead of any for the interval.
   private timerSubscription: Subscription | null = null;
@@ -31,7 +33,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void { }
-    
+
   // Starts the countdown timer
   startTimer(): void {
     // If the timer already started then return.
@@ -39,10 +41,13 @@ export class PomodoroTimer implements OnInit, OnDestroy {
 
     // Start the timer.
     this.isRunning = true;
+
+    
     //??
     this.timerSubscription = interval(1000).subscribe(() => {
       if(this.timeLeft > 0){
         this.timeLeft--;
+        this.strokeDashoffset = -((this.circleTime-this.timeLeft) / this.circleTime) * this.circumference;
         // Explicitly tell Angular to check for changes and update the view
         this.cdr.detectChanges();
       } else {
@@ -60,18 +65,22 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     if(!this.isBreak) {
       this.playNotificationSound();
       alert('Timer is up! Take a break!');
+      this.strokeDashoffset = 0;
 
       this.stopNotificationSound();
       this.isBreak = true;
       this.timeLeft = this.BREAK_TIME;
+      this.circleTime = this.timeLeft;
 
       this.startTimer();
     } else {
       this.playNotificationSound();
       alert('Break is over!');
+      this.strokeDashoffset = 0;
       this.stopNotificationSound();
       this.isBreak = false;
       this.timeLeft = this.WORK_TIME;
+      this.circleTime = this.timeLeft;
     }
 
     this.cdr.detectChanges();
@@ -105,12 +114,14 @@ export class PomodoroTimer implements OnInit, OnDestroy {
   resetTimer(): void {
     this.pauseTimer();
     this.timeLeft = this.isBreak ? this.BREAK_TIME : this.WORK_TIME;
+    this.strokeDashoffset = 0;
     this.cdr.detectChanges();
   }
 
   resetAllTimer(): void {
     this.pauseTimer();
     this.timeLeft = this.WORK_TIME;
+    this.strokeDashoffset = 0;
     this.cdr.detectChanges();
   }
 
