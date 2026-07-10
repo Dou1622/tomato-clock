@@ -11,13 +11,19 @@ import { interval, Subscription } from 'rxjs';
 })
 
 export class PomodoroTimer implements OnInit, OnDestroy {
-  //Default Pomodoto Time : 25 mins in seconds
+  // Default Pomodoto Time : 25 mins in seconds
   readonly WORK_TIME = 0.05 * 60;
   readonly BREAK_TIME = 0.05 * 60;
+  // The original timer circle's circumference.
   readonly circumference = 2 * Math.PI * 72; 
-  strokeDashoffset: number = 0;
-  
-
+  /*
+    In the HTML file, under class=progress-ring_circle, 
+    use stroke-dasharray to render the timer circle as a series of dashes and gaps.
+    strokeDashoffset stores the offset for the strok-dasharray.
+    And using the strokeDashoffset and the stroke-daharray 
+    to show a count down circle timer.
+  */
+  strokeDashoffset: number = 0; 
   timeLeft: number = this.WORK_TIME;
   circleTime: number = this.WORK_TIME;
   //timerInterval: any = null;
@@ -47,6 +53,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     this.timerSubscription = interval(1000).subscribe(() => {
       if(this.timeLeft > 0){
         this.timeLeft--;
+        // Increase the offset when the timer is counting down.
         this.strokeDashoffset = -((this.circleTime-this.timeLeft) / this.circleTime) * this.circumference;
         // Explicitly tell Angular to check for changes and update the view
         this.cdr.detectChanges();
@@ -65,6 +72,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     if(!this.isBreak) {
       this.playNotificationSound();
       alert('Timer is up! Take a break!');
+      // Resets the circle offset every time the countdown finishes.
       this.strokeDashoffset = 0;
 
       this.stopNotificationSound();
@@ -76,6 +84,7 @@ export class PomodoroTimer implements OnInit, OnDestroy {
     } else {
       this.playNotificationSound();
       alert('Break is over!');
+      // Resets the circle offset every time the countdown finishes.
       this.strokeDashoffset = 0;
       this.stopNotificationSound();
       this.isBreak = false;
@@ -114,13 +123,15 @@ export class PomodoroTimer implements OnInit, OnDestroy {
   resetTimer(): void {
     this.pauseTimer();
     this.timeLeft = this.isBreak ? this.BREAK_TIME : this.WORK_TIME;
-    this.strokeDashoffset = 0;
+    // Resets the circle offset every time the countdown finishes.
+    this.strokeDashoffset = 0; //
     this.cdr.detectChanges();
   }
 
   resetAllTimer(): void {
     this.pauseTimer();
     this.timeLeft = this.WORK_TIME;
+    // Resets the circle offset every time the countdown finishes.
     this.strokeDashoffset = 0;
     this.cdr.detectChanges();
   }

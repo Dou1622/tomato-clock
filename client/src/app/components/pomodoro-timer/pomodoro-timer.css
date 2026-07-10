@@ -1,4 +1,38 @@
+.timer-container {
+    /* [CRITICAL] Establishes this container as the reference point for any absolutely positioned child elements */
+    position: relative;
+    /* Creates space at the bottom to prevent the buttons from overlapping with the content above */
+    padding-bottom: 60px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.status-title {
+    width: 160px;
+    text-align: center;
+}
+
+.timer-circle {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .progress-ring_circle {
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
+
+.controls{
+    /* Detaches the element from the normal document layout flow, allowing it to float freely */
+    position: absolute;
+    /* Pins the element perfectly to the very bottom of the parent container */
+    bottom: 0;
+    /* Positions the left edge of the element exactly at the horizontal center (50%) of the parent */
+    left:50%;
+    /* Shifts the element back to the left by half of its own width, achieving a perfect horizontal centering alignment */
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+}
+

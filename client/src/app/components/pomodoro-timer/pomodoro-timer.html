@@ -7,31 +7,34 @@
       <span style="color: #e74c3c;">🔥 Focus</span>
     }
   </h3>
-  
-  <!-- <div class="time-display">
-    {{ formatTime }}
-  </div> -->
-  
-  <!-- <div class="circle">
-    <svg width="100" height="100">
-      <circle cx="50" cy="50" r="40" stroke="Black" stroke-width="4" fill="none" stroke-dasharray="280"; />
-      <text fill="black" font-size="10" font-family="Verdana" x="50" y="50">{{ formatTime }}</text>
-    </svg>
-  </div> -->
 
   <div class="timer-circle">
     <svg class="progress-ring" width="160" height="160">
       <circle class="progress-ring_circle"
-        stroke-width="4" // Line width
+        stroke-width="4"   // Line width
         stroke="black"   // Line color
-        fill="transparent"
-        r="72"    // r=(width/2)-(stroke-width*2)
+        fill="transparent"  // r=(width/2)-(stroke-width*2)
+        r="72"    
         cx="80"
         cy="80"
-        [style.strokeDasharray]="circumference"
+        // "strokeDasharry = dashSize gapSize dashSize gapSize....;" Here there is no gapsize, so the whole timer ciclr is a dash. 
+        [style.strokeDasharray]="circumference" 
+        // Using strokeDashoffset to make the strokeDasharry's dash move.
         [style.strokeDashoffset]="strokeDashoffset"
       />
-      <text fill="black" font-size="10" font-family="Verdana" x="50" y="50">{{ formatTime }}</text>
+      <text
+        x="80" // Set x,y as the circle's origin
+        y="80"
+        fill="black" 
+        font-size="30" 
+        font-family="Verdana"  
+        // Align the text horizontally as x is the center
+        text-anchor="middle" 
+        // Align the text horizontally as y is the center
+        dominant-baseline="central" 
+        >
+        {{ formatTime }}
+      </text>
     </svg>
   </div>
 
